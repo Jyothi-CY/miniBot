@@ -18,10 +18,16 @@ user_input = st.chat_input("Type your message here...")
 
 if user_input:
     st.session_state.messages.append(("user", user_input))
+    
+    for role, msg in st.session_state.messages:
+        render_chat_bubble(role, msg)
+    
     with st.spinner("Mini Bot is typing..."):
         full_history = st.session_state.messages.copy()
         reply = get_gemini_response(full_history)
         st.session_state.messages.append(("model", reply))
-
-for role, msg in st.session_state.messages:
-    render_chat_bubble(role, msg)
+    st.rerun()
+    
+else:
+    for role, msg in st.session_state.messages:
+        render_chat_bubble(role, msg)
